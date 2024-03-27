@@ -10,12 +10,18 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "name")
     private String name;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "age")
     private int age;
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+    @Column(name = "policy_number", unique = true, nullable = false)
     private int policyNumber;
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "patientOwner")
     private final List<MedicalHistory> medicalHistory = new ArrayList<>();
 
     public Patient() {

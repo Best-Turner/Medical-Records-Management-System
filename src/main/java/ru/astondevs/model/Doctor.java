@@ -2,7 +2,7 @@ package ru.astondevs.model;
 
 import javax.persistence.*;
 
-@Table(name = "doctors")
+@Table(name = "Doctors")
 @Entity
 public class Doctor {
     @Id
