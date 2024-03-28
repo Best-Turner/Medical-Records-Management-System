@@ -21,7 +21,9 @@ public class Patient {
     private Gender gender;
     @Column(name = "policy_number", unique = true, nullable = false)
     private int policyNumber;
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "patientOwner")
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private final List<Appointment> patientAppointment = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "patientOwner", fetch = FetchType.LAZY)
     private final List<MedicalHistory> medicalHistory = new ArrayList<>();
 
     public Patient() {
@@ -85,6 +87,10 @@ public class Patient {
 
     public void setPolicyNumber(int policyNumber) {
         this.policyNumber = policyNumber;
+    }
+
+    public List<Appointment> getPatientAppointment() {
+        return patientAppointment;
     }
 
     public enum Gender {

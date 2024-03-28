@@ -1,6 +1,7 @@
 package ru.astondevs.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "Doctors")
 @Entity
@@ -14,8 +15,13 @@ public class Doctor {
     private String surname;
     @Column(name = "work_experience")
     private int workExperience;
+    @Column(name = "speciality")
     @Enumerated(EnumType.STRING)
     private Speciality speciality;
+    @OneToOne(mappedBy = "doctor", fetch = FetchType.LAZY)
+    private DoctorSchedule schedule;
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    private List<Appointment> appointments;
 
     public enum Speciality {
         SURGEON, THERAPIST, PEDIATRICIAN
@@ -69,5 +75,21 @@ public class Doctor {
 
     public void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
+    }
+
+    public DoctorSchedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(DoctorSchedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }
