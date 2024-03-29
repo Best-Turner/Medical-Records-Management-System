@@ -1,39 +1,22 @@
 package ru.astondevs.model;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "Patients")
-@Entity
 public class Patient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "surname")
-    private String surname;
-    @Column(name = "age")
     private int age;
-    @Column(name = "gender")
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    @Column(name = "policy_number", unique = true, nullable = false)
-    private int policyNumber;
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private final List<Appointment> patientAppointment = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "patientOwner", fetch = FetchType.LAZY)
-    private final List<MedicalHistory> medicalHistory = new ArrayList<>();
+    private String policyNumber;
+    private final List<Appointment> appointments = new ArrayList<>();
+    private final List<Doctor> doctors = new ArrayList<>();
 
     public Patient() {
     }
 
-    public Patient(String name, String surname, int age, Gender gender, int policyNumber) {
+    public Patient(String name, int age, String policyNumber) {
         this.name = name;
-        this.surname = surname;
         this.age = age;
-        this.gender = gender;
         this.policyNumber = policyNumber;
     }
 
@@ -53,14 +36,6 @@ public class Patient {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public int getAge() {
         return age;
     }
@@ -69,31 +44,20 @@ public class Patient {
         this.age = age;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public List<MedicalHistory> getMedicalHistory() {
-        return medicalHistory;
-    }
-
-    public int getPolicyNumber() {
+    public String getPolicyNumber() {
         return policyNumber;
     }
 
-    public void setPolicyNumber(int policyNumber) {
+    public void setPolicyNumber(String policyNumber) {
         this.policyNumber = policyNumber;
     }
 
-    public List<Appointment> getPatientAppointment() {
-        return patientAppointment;
+    public List<Appointment> getAppointments() {
+        return appointments;
     }
 
-    public enum Gender {
-        MALE, FEMALE
+    public List<Doctor> getDoctors() {
+        return doctors;
     }
+
 }

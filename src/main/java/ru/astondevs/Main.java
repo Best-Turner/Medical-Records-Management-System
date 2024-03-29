@@ -1,3 +1,5 @@
+package ru.astondevs;
+
 import java.time.LocalTime;
 
 public class Main {

@@ -1,39 +1,25 @@
 package ru.astondevs.model;
 
-import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-@Table(name = "Schedule")
-@Entity
+
 public class DoctorSchedule {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "start_work")
-    private LocalTime startWork;
-    @Column(name = "end_work")
-    private LocalTime endWork;
-    @OneToOne
-    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
-    @Column(name = "date")
-    @Temporal(TemporalType.DATE)
-    private Date date;
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private final List<FreeSlot> freeSlotList = new ArrayList<>();
+    private LocalDate date;
+    private LocalTime time;
+    private boolean isBooked;
 
     public DoctorSchedule() {
     }
 
-    public DoctorSchedule(LocalTime startWork, LocalTime endWork, Doctor doctor, Date date) {
-        this.startWork = startWork;
-        this.endWork = endWork;
+    public DoctorSchedule(Doctor doctor, LocalDate date, LocalTime time) {
         this.doctor = doctor;
         this.date = date;
+        this.time = time;
+        isBooked = false;
     }
 
     public Long getId() {
@@ -44,22 +30,6 @@ public class DoctorSchedule {
         this.id = id;
     }
 
-    public LocalTime getStartWork() {
-        return startWork;
-    }
-
-    public void setStartWork(LocalTime startWork) {
-        this.startWork = startWork;
-    }
-
-    public LocalTime getEndWork() {
-        return endWork;
-    }
-
-    public void setEndWork(LocalTime endWork) {
-        this.endWork = endWork;
-    }
-
     public Doctor getDoctor() {
         return doctor;
     }
@@ -68,15 +38,29 @@ public class DoctorSchedule {
         this.doctor = doctor;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public List<FreeSlot> getFreeSlotList() {
-        return freeSlotList;
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
     }
 }
+
+

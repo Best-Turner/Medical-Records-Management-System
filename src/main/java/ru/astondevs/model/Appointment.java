@@ -1,24 +1,15 @@
 package ru.astondevs.model;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Table(name = "Appointments")
-@Entity
+
 public class Appointment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    @Temporal(TemporalType.DATE)
     private LocalDate date;
-    @Temporal(TemporalType.TIME)
     private LocalTime time;
-    @ManyToOne
-    @JoinColumn(name = "doctor_id", referencedColumnName = "id", nullable = false)
     private Doctor doctor;
-    @ManyToOne
-    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
     private Patient patient;
 
     public Appointment() {
