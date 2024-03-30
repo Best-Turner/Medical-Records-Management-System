@@ -1,4 +1,7 @@
-CREATE TABLE if not EXISTS patients
+drop table IF EXISTS doctor_patient, appointments, doctor_schedule, patients, doctors;
+
+
+CREATE TABLE  patients
 (
     id            serial primary key not null,
     name          varchar(100)       not null,
@@ -7,14 +10,14 @@ CREATE TABLE if not EXISTS patients
 );
 
 
-CREATE TABLE if not EXISTS doctors
+CREATE TABLE  doctors
 (
     id         serial primary key not null,
     name       varchar(50)        not null,
     speciality varchar(50)
 );
 
-CREATE TABLE if not EXISTS doctor_schedule
+CREATE TABLE doctor_schedule
 (
     id        serial primary key not null,
     date      DATE               not null,
@@ -24,7 +27,7 @@ CREATE TABLE if not EXISTS doctor_schedule
     foreign key (doctor_id) references doctors (id)
 );
 
-CREATE TABLE if not EXISTS appointments
+CREATE TABLE  appointments
 (
     id         SERIAL PRIMARY KEY,
     date       DATE NOT NULL,
@@ -32,12 +35,10 @@ CREATE TABLE if not EXISTS appointments
     doctor_id  INT  NOT NULL,
     patient_id INT  NOT NULL,
     FOREIGN KEY (doctor_id) REFERENCES doctors (id),
-    FOREIGN KEY (patient_id) REFERENCES patients (id),
-    CONSTRAINT fk_date_schedule FOREIGN KEY (date) REFERENCES doctor_schedule (date),
-    CONSTRAINT fk_time_schedule FOREIGN KEY (time) REFERENCES doctor_schedule (time)
+    FOREIGN KEY (patient_id) REFERENCES patients (id)
 );
 
-CREATE TABLE if not EXISTS doctor_patient
+CREATE TABLE  doctor_patient
 (
     id_doctor  INT,
     id_patient INT,
