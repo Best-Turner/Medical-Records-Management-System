@@ -6,7 +6,7 @@ CREATE TABLE patients
     id            serial primary key not null,
     name          varchar(100)       not null,
     age           int                not null,
-    policy_number varchar(50)        not null
+    policy_number varchar(50) unique not null
 );
 
 

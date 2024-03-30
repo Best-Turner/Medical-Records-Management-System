@@ -27,7 +27,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public boolean update(Integer object) {
+    public boolean update(Doctor toUpdated, Integer object) {
         return false;
     }
 }

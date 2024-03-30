@@ -168,4 +168,21 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         }
         return result;
     }
+
+    @Override
+    public boolean exists(Integer id) {
+        boolean executeResult = false;
+        sql = "select EXISTS(select * from doctors where id = ?);";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                executeResult = resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return executeResult;
+    }
 }

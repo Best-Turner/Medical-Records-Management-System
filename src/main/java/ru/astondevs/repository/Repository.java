@@ -14,4 +14,6 @@ public interface Repository<T, K> {
 
     boolean update(T object);
 
+    boolean exists(K id);
+
 }

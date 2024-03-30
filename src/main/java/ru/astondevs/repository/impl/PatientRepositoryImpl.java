@@ -74,6 +74,24 @@ public class PatientRepositoryImpl implements PatientRepository {
     }
 
     @Override
+    public boolean existsPolicyNumber(String policyNumber) {
+        boolean executeResult = false;
+        sql = "select EXISTS(select * from patients p where p.policy_number = ?);";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, policyNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                executeResult = resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return executeResult;
+    }
+
+
+    @Override
     public Optional<Patient> findById(Long id) {
         sql = "SELECT * FROM patients WHERE id = ?";
         Patient patient = null;
@@ -177,5 +195,22 @@ public class PatientRepositoryImpl implements PatientRepository {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    @Override
+    public boolean exists(Long id) {
+        boolean executeResult = false;
+        sql = "select EXISTS(select * from patients where id = ?);";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                executeResult = resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return executeResult;
     }
 }

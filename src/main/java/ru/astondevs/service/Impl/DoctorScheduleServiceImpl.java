@@ -27,7 +27,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     }
 
     @Override
-    public boolean update(Long object) {
+    public boolean update(DoctorSchedule toUpdated, Long object) {
         return false;
     }
 }
