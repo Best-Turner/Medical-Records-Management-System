@@ -2,7 +2,6 @@ package ru.astondevs.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import ru.astondevs.util.ReadResources;
 import ru.astondevs.util.ReaderFile;
 
 import java.io.IOException;
@@ -17,14 +16,13 @@ public class DatabaseConnector implements ConnectionManager {
     private static final String KEY_URL = "url";
     private static final String KEY_NAME = "name";
     private static final String KEY_PASSWORD = "password";
+    private static final String PATH_PROPERTIES = "application.properties";
     private ReaderFile readerFile;
+    private HikariDataSource dataSource;
 
     public DatabaseConnector(ReaderFile readerFile) {
         this.readerFile = readerFile;
     }
-
-    private HikariDataSource dataSource;
-    private static final String PATH_PROPERTIES = "application.properties";
 
 
     @Override
@@ -58,7 +56,6 @@ public class DatabaseConnector implements ConnectionManager {
             connectionDetails.put(KEY_URL, properties.get(KEY_URL).toString());
             connectionDetails.put(KEY_NAME, properties.get(KEY_NAME).toString());
             connectionDetails.put(KEY_PASSWORD, properties.get(KEY_PASSWORD).toString());
-            System.out.println("Прочитано!");
         } catch (IOException e) {
             System.out.println("Данные для подключения не найдены");
         }

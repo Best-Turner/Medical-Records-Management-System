@@ -47,7 +47,7 @@ public class DatabaseInitialize {
         StringBuilder builder = new StringBuilder();
 
         try (InputStream read = readerFile.read(PATH_SQL_SCRIPT);
-             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(read))) {
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(read, "UTF-8"))) {
             String temp;
             while ((temp = bufferedReader.readLine()) != null) {
                 builder.append(temp);

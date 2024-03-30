@@ -1,7 +1,7 @@
 drop table IF EXISTS doctor_patient, appointments, doctor_schedule, patients, doctors;
 
 
-CREATE TABLE  patients
+CREATE TABLE patients
 (
     id            serial primary key not null,
     name          varchar(100)       not null,
@@ -10,7 +10,7 @@ CREATE TABLE  patients
 );
 
 
-CREATE TABLE  doctors
+CREATE TABLE doctors
 (
     id         serial primary key not null,
     name       varchar(50)        not null,
@@ -24,27 +24,27 @@ CREATE TABLE doctor_schedule
     time      TIME               not null,
     is_booked boolean            not null,
     doctor_id int                not null,
-    foreign key (doctor_id) references doctors (id)
+    foreign key (doctor_id) references doctors (id) on delete CASCADE
 );
 
-CREATE TABLE  appointments
+CREATE TABLE appointments
 (
     id         SERIAL PRIMARY KEY,
     date       DATE NOT NULL,
     time       TIME NOT NULL,
     doctor_id  INT  NOT NULL,
     patient_id INT  NOT NULL,
-    FOREIGN KEY (doctor_id) REFERENCES doctors (id),
-    FOREIGN KEY (patient_id) REFERENCES patients (id)
+    FOREIGN KEY (doctor_id) REFERENCES doctors (id) on delete cascade,
+    FOREIGN KEY (patient_id) REFERENCES patients (id) on delete cascade
 );
 
-CREATE TABLE  doctor_patient
+CREATE TABLE doctor_patient
 (
     id_doctor  INT,
     id_patient INT,
     PRIMARY KEY (id_doctor, id_patient),
-    FOREIGN KEY (id_doctor) REFERENCES doctors (id),
-    FOREIGN KEY (id_patient) REFERENCES patients (id)
+    FOREIGN KEY (id_doctor) REFERENCES doctors (id) on DELETE CASCADE,
+    FOREIGN KEY (id_patient) REFERENCES patients (id) ON DELETE CASCADE
 );
 
 

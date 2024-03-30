@@ -1,16 +1,17 @@
 package ru.astondevs.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface Repository<T, K> {
-    T findById(K id);
+    Optional<T> findById(K id);
 
     boolean deleteById(K id);
 
     List<T> findAll();
 
-    T save(T t);
+    Optional<T> save(T t);
 
-    boolean update(K object);
+    boolean update(T object);
 
 }

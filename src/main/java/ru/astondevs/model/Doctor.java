@@ -6,9 +6,7 @@ import java.util.List;
 
 public class Doctor {
     private Integer id;
-
     private String name;
-
     private Speciality speciality;
     private List<Patient> patients = new ArrayList<>();
     private List<DoctorSchedule> schedule = new ArrayList<>();
