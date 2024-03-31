@@ -1,75 +1,59 @@
 package ru.astondevs.repository.impl;
 
 import ru.astondevs.db.ConnectionManager;
+import ru.astondevs.model.Appointment;
 import ru.astondevs.model.Doctor;
-import ru.astondevs.model.DoctorSchedule;
-import ru.astondevs.repository.DoctorScheduleRepository;
+import ru.astondevs.model.Patient;
+import ru.astondevs.repository.AppointmentRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
-    private ConnectionManager connectionManager;
+public class AppointmentRepositoryImpl implements AppointmentRepository {
+
+    private final ConnectionManager connectionManager;
     private String sql;
 
-    public DoctorScheduleRepositoryImpl(ConnectionManager connectionManager) {
+    public AppointmentRepositoryImpl(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
 
     @Override
-    public boolean changeStatus(int doctorId, long scheduleId, boolean isBooked) {
-        sql = "UPDATE doctor_schedule SET is_booked = ? WHERE schedule_id = ? AND doctor_id = ?;";
-        boolean result = false;
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            connection.setAutoCommit(false);
-            preparedStatement.setBoolean(1, isBooked);
-            preparedStatement.setLong(2, scheduleId);
-            preparedStatement.setLong(3, doctorId);
-            int countDeletedRows = preparedStatement.executeUpdate();
-            connection.commit();
-            if (countDeletedRows != 0) {
-                result = true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return result;
-    }
-
-    @Override
-    public Optional<DoctorSchedule> findById(Long id) {
-        sql = "select sc.id, sc.time, sc.date, sc.is_booked, d.name, d.speciality\n" +
-                "FROM doctor_schedule sc\n" +
-                "         JOIN doctors d ON sc.doctor_id = d.id\n" +
-                "WHERE sc.id =?";
-        DoctorSchedule schedule = null;
+    public Optional<Appointment> findById(Long id) {
+        sql = "SELECT a.id, a.date, a.time, d.id as doctor_id, d.name, d.speciality, p.id as patient_id\n" +
+                "FROM appointments a\n" +
+                "         JOIN doctors d on a.doctor_id = d.id JOIN patients p on a.patient_id = p.id\n" +
+                "WHERE a.id =?;";
+        Appointment appointment = null;
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                schedule = new DoctorSchedule();
-                schedule.setId(resultSet.getLong("id"));
-                schedule.setDate(resultSet.getDate("date"));
-                schedule.setTime(resultSet.getTime("time"));
-                schedule.setBooked(resultSet.getBoolean("is_booked"));
+                appointment = new Appointment();
+                appointment.setId(resultSet.getLong("id"));
+                appointment.setDate(resultSet.getDate("date"));
+                appointment.setTime(resultSet.getTime("time"));
+                long patientId = resultSet.getLong("patient_id");
                 String doctorName = resultSet.getString("name");
-                String speciality = resultSet.getString("speciality");
-                schedule.setDoctor(new Doctor(doctorName, Doctor.Speciality.valueOf(speciality)));
+                Doctor.Speciality speciality = Doctor.Speciality.valueOf(resultSet.getString("speciality"));
+                appointment.setDoctor(new Doctor(doctorName, speciality));
+                Patient patient = new Patient();
+                patient.setId(patientId);
+                appointment.setPatient(patient);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return Optional.of(schedule);
+        return Optional.of(appointment);
     }
 
     @Override
     public boolean deleteById(Long id) {
         boolean result = false;
-        sql = "DELETE FROM doctor_schedule WHERE id = ?";
+        sql = "DELETE FROM appointments WHERE id = ?;";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
@@ -77,8 +61,8 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
             int countDeletedRows = preparedStatement.executeUpdate();
             if (countDeletedRows != 0) {
                 result = true;
-                connection.commit();
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,46 +70,48 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
     }
 
     @Override
-    public List<DoctorSchedule> findAll() {
-        sql = "SELECT * FROM doctor_schedule;";
-        List<DoctorSchedule> scheduleList = new ArrayList<>();
-        DoctorSchedule schedule;
+    public List<Appointment> findAll() {
+        sql = "SELECT * FROM appointments;";
+        List<Appointment> appointmentList = new ArrayList<>();
+        Appointment appointment;
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             Doctor doctor = new Doctor();
+            Patient patient = new Patient();
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
                 Date date = resultSet.getDate("date");
                 Time time = resultSet.getTime("time");
-                boolean isBooked = resultSet.getBoolean("is_booked");
                 int doctorId = resultSet.getInt("doctor_id");
+                long patientId = resultSet.getLong("patient_id");
                 doctor.setId(doctorId);
-                schedule = new DoctorSchedule();
-                schedule.setId(id);
-                schedule.setDate(date);
-                schedule.setTime(time);
-                schedule.setBooked(isBooked);
-                schedule.setDoctor(doctor);
-                scheduleList.add(schedule);
+                patient.setId(patientId);
+                appointment = new Appointment();
+                appointment.setId(id);
+                appointment.setDate(date);
+                appointment.setTime(time);
+                appointment.setPatient(patient);
+                appointment.setDoctor(doctor);
+                appointmentList.add(appointment);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return scheduleList;
+        return appointmentList;
     }
 
     @Override
-    public Optional<DoctorSchedule> save(DoctorSchedule schedule) {
+    public Optional<Appointment> save(Appointment appointment) {
         long id = 0;
-        sql = "INSERT INTO doctor_schedule(date, time, is_booked, doctor_id) VALUES(?,?,?,?) RETURNING id;";
+        sql = "INSERT INTO appointment(date, time, patient_id, doctor_id) VALUES(?,?,?,?) RETURNING id;";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
-            preparedStatement.setDate(1, schedule.getDate());
-            preparedStatement.setTime(2, schedule.getTime());
-            preparedStatement.setBoolean(3, schedule.isBooked());
-            preparedStatement.setInt(4, schedule.getDoctor().getId());
+            preparedStatement.setDate(1, appointment.getDate());
+            preparedStatement.setTime(2, appointment.getTime());
+            preparedStatement.setLong(3, appointment.getPatient().getId());
+            preparedStatement.setInt(4, appointment.getDoctor().getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 id = resultSet.getLong("id");
@@ -138,16 +124,14 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
     }
 
     @Override
-    public boolean update(DoctorSchedule schedule) {
+    public boolean update(Appointment appointment) {
         boolean result = false;
-        sql = "UPDATE doctor_schedule SET date = ?, time = ?, is_booked = ? WHERE id = ?;";
+        sql = "UPDATE appointments SET date = ?, time = ? WHERE id = ?;";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
-            preparedStatement.setDate(1, schedule.getDate());
-            preparedStatement.setTime(2, schedule.getTime());
-            preparedStatement.setBoolean(3, schedule.isBooked());
-            preparedStatement.setLong(4, schedule.getId());
+            preparedStatement.setDate(1, appointment.getDate());
+            preparedStatement.setTime(2, appointment.getTime());
             int countDeletedRows = preparedStatement.executeUpdate();
             if (countDeletedRows != 0) {
                 result = true;
@@ -162,7 +146,7 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
     @Override
     public boolean exists(Long id) {
         boolean executeResult = false;
-        sql = "select EXISTS(select * from doctor_schedule where id = ?);";
+        sql = "select EXISTS(select * from appointments where id = ?);";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
