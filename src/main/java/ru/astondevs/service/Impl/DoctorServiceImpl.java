@@ -49,10 +49,10 @@ public class DoctorServiceImpl implements DoctorService {
     public boolean update(Doctor toUpdated, Integer doctorId) throws DoctorNotFoundException {
         checkDoctorId(doctorId);
         Doctor doctorFromDb = doctorRepository.findById(doctorId).get();
-        if (!toUpdated.getName().isBlank()) {
+        if (!toUpdated.getName().isEmpty()) {
             doctorFromDb.setName(toUpdated.getName());
         }
-        if (!toUpdated.getSpeciality().name().isBlank()) {
+        if (!toUpdated.getSpeciality().name().isEmpty()) {
             doctorFromDb.setSpeciality(toUpdated.getSpeciality());
         }
         return doctorRepository.update(doctorFromDb);

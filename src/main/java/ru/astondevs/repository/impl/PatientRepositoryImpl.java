@@ -12,8 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class PatientRepositoryImpl implements PatientRepository {
-    private ConnectionManager connectionManager;
+    private final ConnectionManager connectionManager;
     private String sql;
+
+    public PatientRepositoryImpl(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+    }
 
     @Override
     public List<Doctor> getMyDoctors(int patientId) {
@@ -130,7 +134,7 @@ public class PatientRepositoryImpl implements PatientRepository {
 
     @Override
     public List<Patient> findAll() {
-        sql = "SELECT * FROM doctors;";
+        sql = "SELECT * FROM patients;";
         List<Patient> patientList = new ArrayList<>();
         Patient patient;
         try (Connection connection = connectionManager.getConnection();

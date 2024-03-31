@@ -4,6 +4,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import ru.astondevs.config.Configuration;
 import ru.astondevs.db.ConnectionManager;
 import ru.astondevs.db.DatabaseConnector;
 import ru.astondevs.db.DatabaseInitialize;
@@ -17,8 +18,10 @@ public class ContextConfig implements ServletContextListener {
         ServletContext servletContext = servletContextEvent.getServletContext();
         ReaderFile readerFile = new ReadResources();
         ConnectionManager connectionManager = new DatabaseConnector(readerFile);
+        Configuration configuration = new Configuration(connectionManager);
         new DatabaseInitialize(connectionManager, readerFile).initDataBase();
         servletContext.setAttribute("connection", connectionManager);
+        servletContext.setAttribute("config", configuration);
     }
 }
 

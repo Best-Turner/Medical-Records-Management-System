@@ -64,14 +64,14 @@ public class PatientServiceImpl implements PatientService {
             throw new PatientNotFoundException(getErrorMessage(patientId));
         }
         Patient patientFromDb = patientRepository.findById(patientId).get();
-        if (!toUpdated.getName().isBlank()) {
+        if (!toUpdated.getName().isEmpty()) {
             patientFromDb.setName(toUpdated.getName());
         }
         if (toUpdated.getAge() >= 0 && toUpdated.getAge() < 150) {
             patientFromDb.setAge(toUpdated.getAge());
         }
         String newPolicyNumber = toUpdated.getPolicyNumber();
-        if (!(newPolicyNumber.isBlank() && patientRepository.existsPolicyNumber(newPolicyNumber))) {
+        if (!(newPolicyNumber.isEmpty() && patientRepository.existsPolicyNumber(newPolicyNumber))) {
             patientFromDb.setPolicyNumber(newPolicyNumber);
         }
         return patientRepository.update(patientFromDb);
@@ -100,10 +100,14 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public boolean deleteAppointment(long patientId, long appointmentId) throws PatientNotFoundException, AppointmentNotFoundException {
-        patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException(getErrorMessage(patientId)));
-        appointmentRepository.findById(appointmentId).orElseThrow(() -> new AppointmentNotFoundException("Расписание с ID = " + appointmentId + " не найдено"));
-        Optional<Appointment> appointmentForDelete = getAppointments(appointmentId).stream().filter(el -> el.getId() == appointmentId).findFirst();
-        appointmentForDelete.orElseThrow(() -> new AppointmentNotFoundException("Расписание не существует"));
+        patientRepository.findById(patientId).orElseThrow(() ->
+                new PatientNotFoundException(getErrorMessage(patientId)));
+        appointmentRepository.findById(appointmentId).orElseThrow(() ->
+                new AppointmentNotFoundException("Расписание с ID = " + appointmentId + " не найдено"));
+        Optional<Appointment> appointmentForDelete =
+                getAppointments(appointmentId).stream().filter(el -> el.getId() == appointmentId).findFirst();
+        appointmentForDelete.orElseThrow(() ->
+                new AppointmentNotFoundException("Расписание не существует"));
         return appointmentRepository.deleteById(appointmentId);
     }
 
