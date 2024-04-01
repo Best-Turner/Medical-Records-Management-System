@@ -7,19 +7,29 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.astondevs.config.Configuration;
+import ru.astondevs.exception.DoctorNotFoundException;
+import ru.astondevs.exception.PatientNotFoundException;
+import ru.astondevs.exception.ScheduleNotFoundException;
+import ru.astondevs.model.Appointment;
 import ru.astondevs.model.Patient;
 import ru.astondevs.service.PatientService;
-import ru.astondevs.servlet.dto.outGoingDto.OutPatientDto;
-import ru.astondevs.servlet.mapper.PatientMapper;
+import ru.astondevs.servlet.handler.PatientRequestHandlerImpl;
+import ru.astondevs.servlet.handler.RequestHandler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@WebServlet(name = "UserServlet", urlPatterns = "/user/*")// /product/%7Bid%7D
+@WebServlet(urlPatterns = {"/user", "/user/*"})
 public class PatientServlet extends HttpServlet {
+
+//    private static final String REGEX_USER = "user/?";
+//    private static final String REGEX_USER_BY_ID = "user/\\d+/?";
+//    private static final String REGEX_USER_ID_APPOINTMENT = "user/\\d+/appointment/?";
+//    private static final String REGEX_USER_ID_APPOINTMENT_ID = "user/\\d+/appointment/\\d+";
     private PatientService patientService;
+    RequestHandler handler;
     private ObjectMapper objectMapper;
 
     @Override
@@ -27,50 +37,44 @@ public class PatientServlet extends HttpServlet {
         Configuration config = (Configuration) getServletContext().getAttribute("config");
         patientService = config.getPatientService();
         objectMapper = new ObjectMapper();
-    }
+        handler = new PatientRequestHandlerImpl(patientService);
 
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //response.setContentType("application/json");
-        PrintWriter writer = response.getWriter();
-        String pathInfo = request.getPathInfo().substring(1);
-        String[] split = pathInfo.split("/");
-        if (split[0].matches("\\d+")) {
-            response.setContentType("text/html");
-            writer.println("Все ок");
-            response.setStatus(HttpServletResponse.SC_OK);
-            return;
-        } else  {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-//        if (split.length > 3) {
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            return;
-//        }
-//        response.setStatus(HttpServletResponse.SC_OK);
+        handler.methodGet(request, response);
     }
+
+
+//    private void requestHandler(String requestURI, HttpServletResponse response) throws IOException, ScheduleNotFoundException, DoctorNotFoundException, PatientNotFoundException {
+//        String[] separatedUriAddress = requestURI.split("/");
+//        response.setContentType("application/json");
+//        PrintWriter writer = response.getWriter();
+//        if (requestURI.matches(REGEX_USER)) {
+//            writer.println(patientService.findAll());
+//        } else if (requestURI.matches(REGEX_USER_BY_ID)) {
+//            Patient byId = patientService.findById(Long.valueOf(separatedUriAddress[1]));
+//            writer.println(byId);
+//        } else if (requestURI.matches(REGEX_USER_ID_APPOINTMENT)) {
+//            List<Appointment> appointments = patientService.getAppointments(Long.valueOf(separatedUriAddress[1]));
+//            writer.println(appointments);
+//        } else if (requestURI.matches(REGEX_USER_ID_APPOINTMENT_ID)) {
+//            patientService.getAppointments(Long.parseLong(separatedUriAddress[3]));
+//        } else {
+//            throw new MalformedURLException("Неверный адрес запроса");
+//        }
+//
+//    }
 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
-
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        handler.methodPost(req, resp);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
-    }
-
-
-    private List<OutPatientDto> getPatients() {
-        List<Patient> patients = patientService.findAll();
-        return patients.stream()
-                .map(el -> PatientMapper.INSTANCE.map(el)).collect(Collectors.toList());
+        handler.methodDelete(req, resp);
     }
 }

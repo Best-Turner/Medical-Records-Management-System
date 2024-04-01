@@ -107,7 +107,8 @@ public class PatientRepositoryImpl implements PatientRepository {
                 patient = new Patient();
                 patient.setId(resultSet.getLong("id"));
                 patient.setName(resultSet.getString("name"));
-                patient.setName(resultSet.getString("policy_number"));
+                patient.setAge(resultSet.getInt("age"));
+                patient.setPolicyNumber(resultSet.getString("policy_number"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

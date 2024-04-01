@@ -7,7 +7,11 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) throws SQLException, IOException {
 
-        String line = "3";
-        System.out.println(line.matches("\\d"));
+
+        String user = "user";
+        String userID = "user/11546465/";
+
+        System.out.println(user.matches("user/?"));
+        System.out.println(userID.matches("user/\\d+/?"));
     }
 }
