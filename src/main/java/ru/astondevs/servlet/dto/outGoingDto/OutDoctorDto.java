@@ -6,16 +6,14 @@ public class OutDoctorDto {
     private String name;
     private String speciality;
 
-    private List<OutDoctorScheduleDto> schedule;
-
 
     public OutDoctorDto() {
     }
 
-    public OutDoctorDto(String name, String speciality, List<OutDoctorScheduleDto> schedule) {
+    public OutDoctorDto(String name, String speciality) {
         this.name = name;
         this.speciality = speciality;
-        this.schedule = schedule;
+
     }
 
     public String getName() {
@@ -32,13 +30,5 @@ public class OutDoctorDto {
 
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
-    }
-
-    public List<OutDoctorScheduleDto> getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(List<OutDoctorScheduleDto> schedule) {
-        this.schedule = schedule;
     }
 }

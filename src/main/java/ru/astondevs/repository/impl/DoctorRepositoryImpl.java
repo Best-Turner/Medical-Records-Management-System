@@ -32,7 +32,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
                 long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
-                String policyNumber = resultSet.getString("policyNumber");
+                String policyNumber = resultSet.getString("policy_number");
                 patient = new Patient(name, age, policyNumber);
                 patient.setId(id);
                 patients.add(patient);
@@ -68,6 +68,21 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             throw new RuntimeException(e);
         }
         return schedules;
+    }
+
+    @Override
+    public void deleteSchedule(int doctorId, long scheduleId) {
+        sql = "DELETE FROM doctor_schedule ds WHERE ds.id = ? AND ds.doctor_id = ?;";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
+            preparedStatement.setLong(1, scheduleId);
+            preparedStatement.setInt(2, doctorId);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

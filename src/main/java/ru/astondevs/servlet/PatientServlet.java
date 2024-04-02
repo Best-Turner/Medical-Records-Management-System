@@ -62,10 +62,6 @@ public class PatientServlet extends HttpServlet {
                 mapper.writeValue(writer, patientToPatientDto(byId));
             } else if (requestURI.matches(REGEX_USER_ID_APPOINTMENT)) {
                 List<Appointment> appointments = patientService.getAppointments(Long.valueOf(separatedUriAddress[1]));
-                //mapper.writeValue(writer, new Appointment(LocalDate.now(), LocalTime.now(),new Doctor(), new Patient()));
-                //mapper.writeValue(writer, new Appointment(LocalDate.now(), LocalTime.now(), new Doctor(), new Patient()));
-                //mapper.writeValue(writer, new Appointment(null, null, new Doctor(), new Patient()));
-                //mapper.writeValue(writer, appointments);
                 mapper.writeValue(writer, appointmentsListToAppointmentDtoList(appointments));
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Страница не найдена");
@@ -119,7 +115,7 @@ public class PatientServlet extends HttpServlet {
                     writer.println("Ошибка сохранения");
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 } else {
-                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setStatus(HttpServletResponse.SC_CREATED);
                 }
             } catch (PatientNotFoundException | DoctorNotFoundException e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
@@ -137,7 +133,7 @@ public class PatientServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 mapper.writeValue(writer, patientToPatientDto(savedPatient));
-                response.setStatus(HttpServletResponse.SC_OK);
+                response.setStatus(HttpServletResponse.SC_CREATED);
             }
         }
     }

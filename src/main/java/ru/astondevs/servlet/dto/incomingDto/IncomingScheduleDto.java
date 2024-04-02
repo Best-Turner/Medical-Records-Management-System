@@ -1,12 +1,15 @@
 package ru.astondevs.servlet.dto.incomingDto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class IncomingScheduleDto {
 
-    private long id;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime time;
     private int doctorId;
 
@@ -19,13 +22,6 @@ public class IncomingScheduleDto {
         this.doctorId = doctorId;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public LocalDate getDate() {
         return date;

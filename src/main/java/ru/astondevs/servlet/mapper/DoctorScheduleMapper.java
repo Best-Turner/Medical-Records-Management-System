@@ -12,7 +12,6 @@ public interface DoctorScheduleMapper {
 
     DoctorScheduleMapper INSTANCE = Mappers.getMapper(DoctorScheduleMapper.class);
 
-    @Mapping(source = "id", target = "id")
     @Mapping(source = "date", target = "date")
     @Mapping(source = "time", target = "time")
     @Mapping(source = "doctorId", target = "doctor.id")

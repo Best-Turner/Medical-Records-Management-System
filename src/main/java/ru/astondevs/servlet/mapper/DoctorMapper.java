@@ -19,7 +19,6 @@ public interface DoctorMapper {
 
     @Mapping(target = "name", source = "name")
     @Mapping(target = "speciality", source = "speciality")
-    @Mapping(target = "schedule", source = "schedule", dateFormat = "dd-MM-yyyy HH:mm:ss")
     OutDoctorDto map(Doctor doctor);
 
 }

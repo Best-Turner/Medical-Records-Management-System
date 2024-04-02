@@ -83,18 +83,29 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorSchedule> addSchedule(DoctorSchedule schedule, int doctorId) throws DoctorNotFoundException {
+    public DoctorSchedule addSchedule(DoctorSchedule schedule, int doctorId) throws DoctorNotFoundException, ScheduleNotFoundException {
         checkDoctorId(doctorId);
         Doctor doctor = doctorRepository.findById(doctorId).get();
         schedule.setDoctor(doctor);
-        scheduleRepository.save(schedule);
-        List<DoctorSchedule> schedules = doctorRepository.getSchedules(doctorId);
-        return schedules.isEmpty() ? Collections.emptyList() : schedules;
+        return scheduleRepository.save(schedule).orElseThrow(() ->new ScheduleNotFoundException("Расписание не сохранилось"));
+    }
+
+
+    @Override
+    public void  deleteSchedule(int doctorId, long scheduleId) throws DoctorNotFoundException, ScheduleNotFoundException {
+        checkDoctorId(doctorId);
+        boolean exists = scheduleRepository.exists(scheduleId);
+        if (!exists) {
+            throw new ScheduleNotFoundException("Расписание не существует");
+        }
+        doctorRepository.deleteSchedule(doctorId, scheduleId);
     }
 
 
     private void checkDoctorId(int doctorId) throws DoctorNotFoundException {
-        doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Доктор с ID = " + doctorId + " не найден"));
+        boolean exists = doctorRepository.exists(doctorId);
+        if (!exists) {
+            throw new DoctorNotFoundException("Доктор с ID = " + doctorId + " не найден");
+        }
     }
-
 }

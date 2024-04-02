@@ -10,6 +10,8 @@ public interface DoctorRepository extends Repository<Doctor, Integer> {
 
     List<Patient> getPatients(int doctorId);
 
+
     List<DoctorSchedule> getSchedules(int doctorId);
 
+    void deleteSchedule(int doctorId, long scheduleId);
 }
