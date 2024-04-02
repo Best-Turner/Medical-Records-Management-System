@@ -14,7 +14,6 @@ import ru.astondevs.service.PatientService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class PatientServiceImpl implements PatientService {
 
@@ -71,7 +70,7 @@ public class PatientServiceImpl implements PatientService {
             patientFromDb.setAge(toUpdated.getAge());
         }
         String newPolicyNumber = toUpdated.getPolicyNumber();
-        if (!(newPolicyNumber.isEmpty() && patientRepository.existsPolicyNumber(newPolicyNumber))) {
+        if (newPolicyNumber != null && !(newPolicyNumber.isEmpty() && patientRepository.existsPolicyNumber(newPolicyNumber))) {
             patientFromDb.setPolicyNumber(newPolicyNumber);
         }
         return patientRepository.update(patientFromDb);
@@ -83,15 +82,18 @@ public class PatientServiceImpl implements PatientService {
         if (!patientRepository.exists(patientId)) {
             throw new PatientNotFoundException(getErrorMessage(patientId));
         }
-        List<Appointment> appointments = appointmentRepository.findAll();
-        List<Appointment> myAppointments = appointments.stream().filter(el ->
-                el.getPatient().getId() == patientId).collect(Collectors.toList());
-        return myAppointments.isEmpty() ? Collections.emptyList() : myAppointments;
+        return patientRepository.getAllAppointments((int) patientId);
+//        List<Appointment> appointments = appointmentRepository.findAll();
+//
+//        List<Appointment> myAppointments = appointments.stream().filter(el ->
+//                el.getPatient().getId() == patientId).collect(Collectors.toList());
+//        return myAppointments.isEmpty() ? Collections.emptyList() : myAppointments;
     }
 
     @Override
-    public Appointment addAppointment(long patientId, int doctorId, Appointment appointment) throws PatientNotFoundException, DoctorNotFoundException {
-        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException(getErrorMessage(doctorId)));
+    public Appointment addAppointment(long patientId, Appointment appointment) throws PatientNotFoundException, DoctorNotFoundException {
+        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException(getErrorMessage(patientId)));
+        Integer doctorId = appointment.getDoctor().getId();
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Доктор с ID = " + doctorId + " не найден"));
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);

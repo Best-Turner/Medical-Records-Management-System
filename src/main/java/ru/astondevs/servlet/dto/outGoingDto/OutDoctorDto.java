@@ -1,7 +1,5 @@
 package ru.astondevs.servlet.dto.outGoingDto;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 public class OutDoctorDto {

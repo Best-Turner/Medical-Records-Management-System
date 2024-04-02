@@ -53,8 +53,8 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
             if (resultSet.next()) {
                 schedule = new DoctorSchedule();
                 schedule.setId(resultSet.getLong("id"));
-                schedule.setDate(resultSet.getDate("date"));
-                schedule.setTime(resultSet.getTime("time"));
+                schedule.setDate(resultSet.getDate("date").toLocalDate());
+                schedule.setTime(resultSet.getTime("time").toLocalTime());
                 schedule.setBooked(resultSet.getBoolean("is_booked"));
                 String doctorName = resultSet.getString("name");
                 String speciality = resultSet.getString("speciality");
@@ -103,8 +103,8 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
                 doctor.setId(doctorId);
                 schedule = new DoctorSchedule();
                 schedule.setId(id);
-                schedule.setDate(date);
-                schedule.setTime(time);
+                schedule.setDate(date.toLocalDate());
+                schedule.setTime(time.toLocalTime());
                 schedule.setBooked(isBooked);
                 schedule.setDoctor(doctor);
                 scheduleList.add(schedule);
@@ -122,8 +122,8 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
-            preparedStatement.setDate(1, schedule.getDate());
-            preparedStatement.setTime(2, schedule.getTime());
+            preparedStatement.setDate(1, Date.valueOf(schedule.getDate()));
+            preparedStatement.setTime(2, Time.valueOf(schedule.getTime()));
             preparedStatement.setBoolean(3, schedule.isBooked());
             preparedStatement.setInt(4, schedule.getDoctor().getId());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -144,8 +144,8 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
-            preparedStatement.setDate(1, schedule.getDate());
-            preparedStatement.setTime(2, schedule.getTime());
+            preparedStatement.setDate(1, Date.valueOf(schedule.getDate()));
+            preparedStatement.setTime(2, Time.valueOf(schedule.getTime()));
             preparedStatement.setBoolean(3, schedule.isBooked());
             preparedStatement.setLong(4, schedule.getId());
             int countDeletedRows = preparedStatement.executeUpdate();

@@ -59,7 +59,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
                 Date date = resultSet.getDate("date");
                 Time time = resultSet.getTime("time");
                 boolean isBooked = resultSet.getBoolean("is_booked");
-                schedule = new DoctorSchedule(doctor, date, time);
+                schedule = new DoctorSchedule(doctor, date.toLocalDate(), time.toLocalTime());
                 schedule.setId(id);
                 schedule.setBooked(isBooked);
                 schedules.add(schedule);

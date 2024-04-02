@@ -10,11 +10,11 @@ public class IncomingDoctorDto {
     public IncomingDoctorDto() {
     }
 
-    public IncomingDoctorDto(int id, String name, Doctor.Speciality speciality) {
-        this.id = id;
+    public IncomingDoctorDto(String name, Doctor.Speciality speciality) {
         this.name = name;
         this.speciality = speciality;
     }
+
 
     public int getId() {
         return id;

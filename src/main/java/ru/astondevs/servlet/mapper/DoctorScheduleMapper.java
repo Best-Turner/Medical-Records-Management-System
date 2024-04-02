@@ -3,11 +3,8 @@ package ru.astondevs.servlet.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import ru.astondevs.model.Appointment;
 import ru.astondevs.model.DoctorSchedule;
-import ru.astondevs.servlet.dto.incomingDto.IncomingAppointmentDto;
 import ru.astondevs.servlet.dto.incomingDto.IncomingScheduleDto;
-import ru.astondevs.servlet.dto.outGoingDto.OutAppointmentDto;
 import ru.astondevs.servlet.dto.outGoingDto.OutDoctorScheduleDto;
 
 @Mapper

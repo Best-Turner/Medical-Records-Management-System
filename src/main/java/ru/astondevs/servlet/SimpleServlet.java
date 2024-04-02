@@ -21,12 +21,12 @@ public class SimpleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ConnectionManager connectionManager = (DatabaseConnector)getServletContext().getAttribute("connection");
+        ConnectionManager connectionManager = (DatabaseConnector) getServletContext().getAttribute("connection");
 
 
         Repository repository = new DoctorRepositoryImpl(connectionManager);
         try {
-            System.out.println(connectionManager.getConnection()== null);
+            System.out.println(connectionManager.getConnection() == null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -34,7 +34,7 @@ public class SimpleServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         //Doctor save = (Doctor)repository.save(doctor);
         writer.println("<html>");
-        writer.println("<p>" +  doctor +" </p>");
+        writer.println("<p>" + doctor + " </p>");
         writer.println("<p>" + "counter  </p>");
         writer.println("</html>");
         writer.close();

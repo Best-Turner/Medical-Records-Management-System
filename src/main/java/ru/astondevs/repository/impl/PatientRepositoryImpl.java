@@ -67,7 +67,7 @@ public class PatientRepositoryImpl implements PatientRepository {
                 String doctorName = resultSet.getString("doctor_name");
                 String speciality = resultSet.getString("speciality");
                 appointment =
-                        new Appointment(date, time, new Doctor(doctorName, Doctor.Speciality.valueOf(speciality)), null);
+                        new Appointment(date.toLocalDate(), time.toLocalTime(), new Doctor(doctorName, Doctor.Speciality.valueOf(speciality)), null);
                 appointment.setId(id);
                 appointmentsList.add(appointment);
             }

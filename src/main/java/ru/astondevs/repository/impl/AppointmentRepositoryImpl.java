@@ -7,6 +7,7 @@ import ru.astondevs.model.Patient;
 import ru.astondevs.repository.AppointmentRepository;
 
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +35,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
             if (resultSet.next()) {
                 appointment = new Appointment();
                 appointment.setId(resultSet.getLong("id"));
-                appointment.setDate(resultSet.getDate("date"));
-                appointment.setTime(resultSet.getTime("time"));
+                Date date = resultSet.getDate("date");
+                appointment.setTime(resultSet.getTime("time").toLocalTime());
                 long patientId = resultSet.getLong("patient_id");
                 String doctorName = resultSet.getString("name");
                 Doctor.Speciality speciality = Doctor.Speciality.valueOf(resultSet.getString("speciality"));
@@ -89,8 +90,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                 patient.setId(patientId);
                 appointment = new Appointment();
                 appointment.setId(id);
-                appointment.setDate(date);
-                appointment.setTime(time);
+                appointment.setDate(date.toLocalDate());
+                appointment.setTime(time.toLocalTime());
                 appointment.setPatient(patient);
                 appointment.setDoctor(doctor);
                 appointmentList.add(appointment);
@@ -108,8 +109,11 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
-            preparedStatement.setDate(1, appointment.getDate());
-            preparedStatement.setTime(2, appointment.getTime());
+            Date date = Date.valueOf(appointment.getDate());
+            Time time = Time.valueOf(LocalTime.now());
+            preparedStatement.setDate(1, date);
+            Time sqlTime = Time.valueOf(appointment.getTime());
+            preparedStatement.setTime(2, sqlTime);
             preparedStatement.setLong(3, appointment.getPatient().getId());
             preparedStatement.setInt(4, appointment.getDoctor().getId());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -130,8 +134,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
-            preparedStatement.setDate(1, appointment.getDate());
-            preparedStatement.setTime(2, appointment.getTime());
+            preparedStatement.setDate(1, Date.valueOf(appointment.getDate()));
+            preparedStatement.setTime(2, Time.valueOf(appointment.getTime()));
             int countDeletedRows = preparedStatement.executeUpdate();
             if (countDeletedRows != 0) {
                 result = true;

@@ -1,25 +1,25 @@
 package ru.astondevs.model;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 
 public class DoctorSchedule {
 
     private Long id;
     private Doctor doctor;
-    private Date date;
-    private Time time;
+    private LocalDate date;
+    private LocalTime time;
     private boolean isBooked;
 
     public DoctorSchedule() {
     }
 
-    public DoctorSchedule(Doctor doctor, Date date, Time time) {
+    public DoctorSchedule(Doctor doctor, LocalDate date, LocalTime time) {
         this.doctor = doctor;
         this.date = date;
         this.time = time;
-        isBooked = false;
+        this.isBooked = false;
     }
 
     public Long getId() {
@@ -38,19 +38,19 @@ public class DoctorSchedule {
         this.doctor = doctor;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 

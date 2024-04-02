@@ -1,26 +1,26 @@
 package ru.astondevs.servlet.dto.incomingDto;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class IncomingAppointmentDto {
 
     private long id;
-    private Date date;
-    private Time time;
+    private LocalDate date;
+    private LocalTime time;
     private long patientId;
     private int doctorId;
 
     public IncomingAppointmentDto() {
     }
 
-    public IncomingAppointmentDto(long id, Date data, Time time, long patientId, int doctorId) {
-        this.id = id;
-        this.date = data;
+    public IncomingAppointmentDto(LocalDate date, LocalTime time, long patientId, int doctorId) {
+        this.date = date;
         this.time = time;
         this.patientId = patientId;
         this.doctorId = doctorId;
     }
+
 
     public long getId() {
         return id;
@@ -30,19 +30,19 @@ public class IncomingAppointmentDto {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 

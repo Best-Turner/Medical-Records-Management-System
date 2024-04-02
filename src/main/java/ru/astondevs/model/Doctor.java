@@ -12,10 +12,6 @@ public class Doctor {
     private List<DoctorSchedule> schedule = new ArrayList<>();
 
 
-    public enum Speciality {
-        SURGEON, THERAPIST, PEDIATRICIAN
-    }
-
     public Doctor() {
     }
 
@@ -62,5 +58,9 @@ public class Doctor {
 
     public void setSchedule(List<DoctorSchedule> schedule) {
         this.schedule = schedule;
+    }
+
+    public enum Speciality {
+        SURGEON, THERAPIST, PEDIATRICIAN
     }
 }

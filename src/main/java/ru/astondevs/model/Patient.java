@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Patient {
+    private final List<Appointment> appointments = new ArrayList<>();
+    private final List<Doctor> doctors = new ArrayList<>();
     private Long id;
     private String name;
     private int age;
     private String policyNumber;
-    private final List<Appointment> appointments = new ArrayList<>();
-    private final List<Doctor> doctors = new ArrayList<>();
 
     public Patient() {
     }

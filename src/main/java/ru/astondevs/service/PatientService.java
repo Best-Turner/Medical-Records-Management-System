@@ -11,7 +11,8 @@ import java.util.List;
 public interface PatientService extends Service<Patient, Long> {
 
     List<Appointment> getAppointments(long patientId) throws PatientNotFoundException;
-    Appointment addAppointment(long patientId, int doctorId, Appointment appointment) throws PatientNotFoundException, DoctorNotFoundException;
+
+    Appointment addAppointment(long patientId, Appointment appointment) throws PatientNotFoundException, DoctorNotFoundException;
 
     boolean deleteAppointment(long patientId, long appointmentId) throws PatientNotFoundException, AppointmentNotFoundException;
 }

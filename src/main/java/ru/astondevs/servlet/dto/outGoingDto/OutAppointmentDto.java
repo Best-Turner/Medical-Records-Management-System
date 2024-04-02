@@ -1,8 +1,5 @@
 package ru.astondevs.servlet.dto.outGoingDto;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class OutAppointmentDto {
 
     private String date;

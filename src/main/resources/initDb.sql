@@ -72,7 +72,8 @@ VALUES ('2024-01-10', '13:45:00', false, 1),
 INSERT INTO appointments(date, time, doctor_id, patient_id)
 VALUES ('2024-01-10', '14:15:00', 1, 1),
        ('2024-01-10', '10:30:00', 2, 1),
-       ('2024-01-11', '13:30:00', 3, 1);
+       ('2024-01-11', '13:30:00', 3, 1),
+       ('2023-08-12', '13:30:00', 3, 2);
 
 INSERT INTO doctor_patient (id_doctor, id_patient)
 VALUES (1, 1),

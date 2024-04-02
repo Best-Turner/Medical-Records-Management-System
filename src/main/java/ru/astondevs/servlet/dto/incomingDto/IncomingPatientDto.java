@@ -11,12 +11,12 @@ public class IncomingPatientDto {
 
     }
 
-    public IncomingPatientDto(long id, String name, int age, String number) {
-        this.id = id;
+    public IncomingPatientDto(String name, int age, String number) {
         this.name = name;
         this.age = age;
         this.number = number;
     }
+
 
     public long getId() {
         return id;
