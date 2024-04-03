@@ -2,6 +2,7 @@ package ru.astondevs.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Patient {
     private final List<Appointment> appointments = new ArrayList<>();
@@ -60,4 +61,16 @@ public class Patient {
         return doctors;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return age == patient.age && Objects.equals(name, patient.name) && Objects.equals(policyNumber, patient.policyNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age, policyNumber);
+    }
 }

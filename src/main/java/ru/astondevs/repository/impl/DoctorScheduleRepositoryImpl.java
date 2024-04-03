@@ -41,7 +41,7 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
 
     @Override
     public Optional<DoctorSchedule> findById(Long id) {
-        sql = "select sc.id, sc.time, sc.date, sc.is_booked, d.name, d.speciality\n" +
+        sql = "select sc.id, sc.time, sc.date, sc.is_booked, d.id as doctor_id, d.name, d.speciality\n" +
                 "FROM doctor_schedule sc\n" +
                 "         JOIN doctors d ON sc.doctor_id = d.id\n" +
                 "WHERE sc.id =?";
@@ -56,9 +56,12 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
                 schedule.setDate(resultSet.getDate("date").toLocalDate());
                 schedule.setTime(resultSet.getTime("time").toLocalTime());
                 schedule.setBooked(resultSet.getBoolean("is_booked"));
+                int doctorId = resultSet.getInt("doctor_id");
                 String doctorName = resultSet.getString("name");
                 String speciality = resultSet.getString("speciality");
-                schedule.setDoctor(new Doctor(doctorName, Doctor.Speciality.valueOf(speciality)));
+                Doctor doctor = new Doctor(doctorName, Doctor.Speciality.valueOf(speciality));
+                doctor.setId(doctorId);
+                schedule.setDoctor(doctor);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

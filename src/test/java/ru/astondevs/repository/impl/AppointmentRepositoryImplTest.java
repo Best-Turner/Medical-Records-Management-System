@@ -1,8 +1,8 @@
-package ru.astondevs.repository;
+package ru.astondevs.repository.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 
-class PatientRepositoryTest {
+class AppointmentRepositoryImplTest {
 
     @BeforeEach
     void setUp() {

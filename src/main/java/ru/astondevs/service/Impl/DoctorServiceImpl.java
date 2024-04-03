@@ -11,7 +11,6 @@ import ru.astondevs.service.DoctorService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
@@ -86,12 +85,12 @@ public class DoctorServiceImpl implements DoctorService {
         checkDoctorId(doctorId);
         Doctor doctor = doctorRepository.findById(doctorId).get();
         schedule.setDoctor(doctor);
-        return scheduleRepository.save(schedule).orElseThrow(() ->new ScheduleNotFoundException("Расписание не сохранилось"));
+        return scheduleRepository.save(schedule).orElseThrow(() -> new ScheduleNotFoundException("Расписание не сохранилось"));
     }
 
 
     @Override
-    public void  deleteSchedule(int doctorId, long scheduleId) throws DoctorNotFoundException, ScheduleNotFoundException {
+    public void deleteSchedule(int doctorId, long scheduleId) throws DoctorNotFoundException, ScheduleNotFoundException {
         checkDoctorId(doctorId);
         boolean exists = scheduleRepository.exists(scheduleId);
         if (!exists) {

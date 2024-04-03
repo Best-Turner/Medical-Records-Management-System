@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.testcontainers.shaded.com.github.dockerjava.core.DockerClientImpl;
 import ru.astondevs.exception.AppointmentNotFoundException;
 import ru.astondevs.exception.DoctorNotFoundException;
 import ru.astondevs.exception.PatientNotFoundException;
@@ -13,10 +12,8 @@ import ru.astondevs.model.Appointment;
 import ru.astondevs.model.Doctor;
 import ru.astondevs.model.Patient;
 import ru.astondevs.repository.AppointmentRepository;
-import ru.astondevs.repository.DoctorRepository;
 import ru.astondevs.repository.PatientRepository;
 import ru.astondevs.repository.impl.DoctorRepositoryImpl;
-import ru.astondevs.repository.impl.PatientRepositoryImpl;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

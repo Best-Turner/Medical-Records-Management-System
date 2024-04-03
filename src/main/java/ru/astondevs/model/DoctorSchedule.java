@@ -2,6 +2,7 @@ package ru.astondevs.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 
 public class DoctorSchedule {
@@ -60,6 +61,30 @@ public class DoctorSchedule {
 
     public void setBooked(boolean booked) {
         isBooked = booked;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DoctorSchedule schedule = (DoctorSchedule) o;
+        return Objects.equals(doctor, schedule.doctor) && Objects.equals(date, schedule.date) && Objects.equals(time, schedule.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(doctor, date, time);
+    }
+
+    @Override
+    public String toString() {
+        return "DoctorSchedule{" +
+                "id=" + id +
+                ", doctor=" + doctor +
+                ", date=" + date +
+                ", time=" + time +
+                ", isBooked=" + isBooked +
+                '}';
     }
 }
 

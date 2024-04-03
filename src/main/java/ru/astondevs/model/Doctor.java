@@ -2,6 +2,7 @@ package ru.astondevs.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Doctor {
@@ -58,6 +59,28 @@ public class Doctor {
 
     public void setSchedule(List<DoctorSchedule> schedule) {
         this.schedule = schedule;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor doctor = (Doctor) o;
+        return Objects.equals(id, doctor.id) && Objects.equals(name, doctor.name) && speciality == doctor.speciality;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, speciality);
+    }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", speciality=" + speciality +
+                '}';
     }
 
     public enum Speciality {

@@ -2,9 +2,6 @@ package ru.astondevs.servlet.dto.incomingDto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 public class IncomingScheduleDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd")

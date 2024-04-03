@@ -77,14 +77,14 @@ class DoctorServiceImplTest {
     }
 
     @Test
-    void whenUpdateDoctorThenReturn() throws DoctorNotFoundException {
+    void whenUpdateDoctorThenReturnTrue() throws DoctorNotFoundException {
         Doctor newDoctor = new Doctor();
         returnTrueWhenRepositoryCheckFor();
         when(doctorRepository.findById(DOCTOR_ID)).thenReturn(Optional.of(doctor));
         newDoctor.setName("newName");
         newDoctor.setSpeciality(Doctor.Speciality.PEDIATRICIAN);
         when(doctorRepository.update(newDoctor)).thenReturn(true);
-        assertFalse(service.update(newDoctor, DOCTOR_ID));
+        assertTrue(service.update(newDoctor, DOCTOR_ID));
     }
 
     @Test
