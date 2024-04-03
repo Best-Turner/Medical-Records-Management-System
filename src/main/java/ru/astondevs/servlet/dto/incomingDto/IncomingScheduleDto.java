@@ -8,34 +8,33 @@ import java.time.LocalTime;
 public class IncomingScheduleDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private String date;
     @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime time;
+    private String time;
     private int doctorId;
 
     public IncomingScheduleDto() {
     }
 
-    public IncomingScheduleDto(LocalDate date, LocalTime time, int doctorId) {
+    public IncomingScheduleDto(String date, String time, int doctorId) {
         this.date = date;
         this.time = time;
         this.doctorId = doctorId;
     }
 
-
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

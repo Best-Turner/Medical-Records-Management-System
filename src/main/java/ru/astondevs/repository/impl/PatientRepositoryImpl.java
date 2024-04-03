@@ -203,6 +203,26 @@ public class PatientRepositoryImpl implements PatientRepository {
     }
 
     @Override
+    public boolean deleteAppointmentsById(long appointmentId, int doctorId) {
+        boolean result = false;
+        sql = "DELETE * FROM appointments a WHERE a.id = ? AND a.patient_id = ?;";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
+            preparedStatement.setLong(1, appointmentId);
+            preparedStatement.setLong(2, doctorId);
+            int countDeletedRows = preparedStatement.executeUpdate();
+            connection.commit();
+            if (countDeletedRows != 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    @Override
     public boolean exists(Long id) {
         boolean executeResult = false;
         sql = "select EXISTS(select * from patients where id = ?);";

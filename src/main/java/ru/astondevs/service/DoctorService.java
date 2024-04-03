@@ -14,7 +14,7 @@ public interface DoctorService extends Service<Doctor, Integer> {
 
     List<Patient> getPatients(int doctorId) throws DoctorNotFoundException;
 
-    List<DoctorSchedule> getSchedule(int doctorId) throws DoctorNotFoundException;
+    List<DoctorSchedule> getSchedules(int doctorId) throws DoctorNotFoundException;
 
     DoctorSchedule addSchedule(DoctorSchedule schedule, int doctorId) throws DoctorNotFoundException, ScheduleNotFoundException;
 

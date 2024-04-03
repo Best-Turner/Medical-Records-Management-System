@@ -65,7 +65,7 @@ public class DoctorServlet extends HttpServlet {
                 List<Patient> patients = doctorService.getPatients(Integer.parseInt(separatedUriAddress[1]));
                 mapper.writeValue(writer, getPatienDtotList(patients));
             } else if (requestURI.matches(REGEX_DOCTOR_ID_SCHEDULE)) {
-                List<DoctorSchedule> schedules = doctorService.getSchedule(Integer.parseInt(separatedUriAddress[1]));
+                List<DoctorSchedule> schedules = doctorService.getSchedules(Integer.parseInt(separatedUriAddress[1]));
                 mapper.writeValue(writer, getScheduleDtoList(schedules));
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Страница не найдена");

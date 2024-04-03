@@ -11,6 +11,7 @@ import ru.astondevs.service.DoctorService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
@@ -37,7 +38,6 @@ public class DoctorServiceImpl implements DoctorService {
     public List<Doctor> findAll() {
         List<Doctor> doctors = doctorRepository.findAll();
         return doctors.isEmpty() ? Collections.emptyList() : doctors;
-
     }
 
     @Override
@@ -62,7 +62,6 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public boolean changeStatusSchedule(int doctorId, long scheduleId, boolean status) throws DoctorNotFoundException, ScheduleNotFoundException {
         checkDoctorId(doctorId);
-        scheduleRepository.findById(scheduleId);
         return scheduleRepository.changeStatus(doctorId, scheduleId, status);
     }
 
@@ -76,7 +75,7 @@ public class DoctorServiceImpl implements DoctorService {
 
 
     @Override
-    public List<DoctorSchedule> getSchedule(int doctorId) throws DoctorNotFoundException {
+    public List<DoctorSchedule> getSchedules(int doctorId) throws DoctorNotFoundException {
         checkDoctorId(doctorId);
         List<DoctorSchedule> schedules = doctorRepository.getSchedules(doctorId);
         return schedules.isEmpty() ? Collections.emptyList() : schedules;

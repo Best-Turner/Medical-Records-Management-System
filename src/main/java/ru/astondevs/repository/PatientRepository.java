@@ -13,4 +13,6 @@ public interface PatientRepository extends Repository<Patient, Long> {
     List<Appointment> getAllAppointments(int patientId);
 
     boolean existsPolicyNumber(String policyNumber);
+
+    boolean deleteAppointmentsById(long appointmentId, int doctorId);
 }

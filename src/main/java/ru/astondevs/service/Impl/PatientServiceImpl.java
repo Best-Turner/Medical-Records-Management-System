@@ -83,11 +83,6 @@ public class PatientServiceImpl implements PatientService {
             throw new PatientNotFoundException(getErrorMessage(patientId));
         }
         return patientRepository.getAllAppointments((int) patientId);
-//        List<Appointment> appointments = appointmentRepository.findAll();
-//
-//        List<Appointment> myAppointments = appointments.stream().filter(el ->
-//                el.getPatient().getId() == patientId).collect(Collectors.toList());
-//        return myAppointments.isEmpty() ? Collections.emptyList() : myAppointments;
     }
 
     @Override
@@ -104,13 +99,17 @@ public class PatientServiceImpl implements PatientService {
     public boolean deleteAppointment(long patientId, long appointmentId) throws PatientNotFoundException, AppointmentNotFoundException {
         patientRepository.findById(patientId).orElseThrow(() ->
                 new PatientNotFoundException(getErrorMessage(patientId)));
+
         appointmentRepository.findById(appointmentId).orElseThrow(() ->
                 new AppointmentNotFoundException("Расписание с ID = " + appointmentId + " не найдено"));
+
         Optional<Appointment> appointmentForDelete =
-                getAppointments(appointmentId).stream().filter(el -> el.getId() == appointmentId).findFirst();
+                getAppointments(patientId).stream().filter(el -> el.getId() == appointmentId).findFirst();
+
         appointmentForDelete.orElseThrow(() ->
                 new AppointmentNotFoundException("Расписание не существует"));
         return appointmentRepository.deleteById(appointmentId);
+
     }
 
     private String getErrorMessage(long id) {
