@@ -24,14 +24,13 @@ public class DatabaseInitialize {
     public void initDataBase() {
         String sqlText = getSqlText();
         String[] sqlCommand = getSqlCommand(sqlText);
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionManager.getConnection();
+             Statement statement = connection.createStatement()) {
             connection.setAutoCommit(false);
-            Statement statement = connection.createStatement();
             for (String sql : sqlCommand) {
                 statement.executeUpdate(sql);
                 connection.commit();
             }
-            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -39,7 +38,6 @@ public class DatabaseInitialize {
 
 
     private String[] getSqlCommand(String textSql) {
-        System.out.println();
         return textSql.split(";");
     }
 

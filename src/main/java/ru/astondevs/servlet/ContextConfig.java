@@ -24,6 +24,3 @@ public class ContextConfig implements ServletContextListener {
         servletContext.setAttribute("config", configuration);
     }
 }
-
-
-

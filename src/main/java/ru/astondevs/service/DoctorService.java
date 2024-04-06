@@ -18,5 +18,5 @@ public interface DoctorService extends Service<Doctor, Integer> {
 
     DoctorSchedule addSchedule(DoctorSchedule schedule, int doctorId) throws DoctorNotFoundException, ScheduleNotFoundException;
 
-    void deleteSchedule(int doctorId, long scheduleId) throws DoctorNotFoundException, ScheduleNotFoundException;
+    boolean deleteSchedule(int doctorId, long scheduleId) throws DoctorNotFoundException, ScheduleNotFoundException;
 }

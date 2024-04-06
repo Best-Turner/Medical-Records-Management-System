@@ -79,7 +79,7 @@ public class PatientServlet extends HttpServlet {
         try (BufferedReader reader = request.getReader()) {
             if (uri.matches(REGEX_USER_BY_ID)) {
                 updatingPatient(response, reader, Long.valueOf(separatedUriAddress[1]));
-                response.setStatus(HttpServletResponse.SC_OK);
+                response.setStatus(HttpServletResponse.SC_CREATED);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
@@ -88,7 +88,7 @@ public class PatientServlet extends HttpServlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         String uri = request.getRequestURI().substring(1);
         String[] separatedUriAddress = uri.split("/");
@@ -169,15 +169,15 @@ public class PatientServlet extends HttpServlet {
                 long userId = Long.valueOf(separatedUriAddress[1]);
                 long appointmentId = Long.valueOf(separatedUriAddress[3]);
                 patientService.deleteAppointment(userId, appointmentId);
+                response.setStatus(HttpServletResponse.SC_OK);
             } else {
-                writer.println("По вашему запросу ничего не найдено");
+                //writer.println("По вашему запросу ничего не найдено");
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "По вашему запросу ничего не найдено");
             }
         } catch (DoctorNotFoundException | PatientNotFoundException | AppointmentNotFoundException e) {
-            writer.println(e.getMessage());
+            //writer.println(e.getMessage());
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
-        response.setStatus(HttpServletResponse.SC_OK);
     }
 
 

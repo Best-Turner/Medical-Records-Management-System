@@ -66,12 +66,12 @@ public class Doctor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Doctor doctor = (Doctor) o;
-        return Objects.equals(id, doctor.id) && Objects.equals(name, doctor.name) && speciality == doctor.speciality;
+        return Objects.equals(name, doctor.name) && speciality == doctor.speciality;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, speciality);
+        return Objects.hash(name, speciality);
     }
 
     @Override

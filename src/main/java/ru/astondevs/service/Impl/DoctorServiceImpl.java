@@ -90,13 +90,14 @@ public class DoctorServiceImpl implements DoctorService {
 
 
     @Override
-    public void deleteSchedule(int doctorId, long scheduleId) throws DoctorNotFoundException, ScheduleNotFoundException {
+    public boolean deleteSchedule(int doctorId, long scheduleId) throws DoctorNotFoundException, ScheduleNotFoundException {
         checkDoctorId(doctorId);
         boolean exists = scheduleRepository.exists(scheduleId);
         if (!exists) {
             throw new ScheduleNotFoundException("Расписание не существует");
         }
         doctorRepository.deleteSchedule(doctorId, scheduleId);
+        return true;
     }
 
 

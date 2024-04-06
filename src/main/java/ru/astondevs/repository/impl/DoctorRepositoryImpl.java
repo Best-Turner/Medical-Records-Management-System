@@ -173,6 +173,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, doctor.getName());
             preparedStatement.setString(2, doctor.getSpeciality().toString());
+            preparedStatement.setInt(3, doctor.getId());
             int countDeletedRows = preparedStatement.executeUpdate();
             connection.commit();
             if (countDeletedRows != 0) {

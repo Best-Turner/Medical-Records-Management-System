@@ -2,6 +2,7 @@ package ru.astondevs.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Appointment {
 
@@ -61,6 +62,28 @@ public class Appointment {
         this.patient = patient;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Appointment that = (Appointment) o;
+        return Objects.equals(date, that.date) && Objects.equals(time, that.time) && Objects.equals(doctor, that.doctor) && Objects.equals(patient, that.patient);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, time, doctor, patient);
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", date=" + date +
+                ", time=" + time +
+                ", doctor=" + doctor +
+                ", patient=" + patient +
+                '}';
+    }
 }
 

@@ -131,10 +131,10 @@ public class DoctorServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestURI = request.getRequestURI().substring(1);
         response.setContentType("application/json");
-        PrintWriter writer = response.getWriter();
+        //PrintWriter writer = response.getWriter();
         String[] separatedUriAddress = requestURI.split("/");
         try {
             response.setStatus(HttpServletResponse.SC_OK);
@@ -148,7 +148,7 @@ public class DoctorServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "По вашему запросу ничего не найдено");
             }
         } catch (DoctorNotFoundException | PatientNotFoundException | ScheduleNotFoundException e) {
-            writer.println(e.getMessage());
+            //writer.println(e.getMessage());
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
