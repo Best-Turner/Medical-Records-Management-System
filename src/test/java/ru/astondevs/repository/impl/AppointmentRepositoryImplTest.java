@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import ru.astondevs.db.ConnectionManager;
 import ru.astondevs.model.Appointment;
@@ -19,7 +20,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@Testcontainers
 class AppointmentRepositoryImplTest {
 
     private static final String DB_NAME = "testDB";
