@@ -10,10 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class IncomingAppointmentDtoTest {
     @Test
     void testConstructor() {
-        IncomingAppointmentDto dto = new IncomingAppointmentDto(LocalDate.now(), LocalTime.now(), 123, 456);
+        LocalTime now = LocalTime.now();
+        IncomingAppointmentDto dto =
+                new IncomingAppointmentDto(LocalDate.now(), now, 123, 456);
 
         assertEquals(LocalDate.now(), dto.getDate());
-        assertEquals(LocalTime.now(), dto.getTime());
+        assertEquals(now, dto.getTime());
         assertEquals(123, dto.getPatientId());
         assertEquals(456, dto.getDoctorId());
     }
